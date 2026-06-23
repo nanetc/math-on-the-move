@@ -1603,12 +1603,13 @@ export default function MathOnTheMove() {
   const goHome = () => setSelectedTopic(null);
 
   const sharedStyle = {
-    minHeight: "100vh",
-    background: "radial-gradient(ellipse at top, #244840 0%, #1B362F 55%, #142822 100%)",
+    minHeight: "100dvh",
+    background: "transparent",
     fontFamily: "'Atkinson Hyperlegible', system-ui, sans-serif",
     color: "#F5F1E6",
     display: "flex",
     flexDirection: "column",
+    paddingBottom: "env(safe-area-inset-bottom)",
   };
 
   const globalStyles = (
@@ -1647,6 +1648,85 @@ export default function MathOnTheMove() {
       .handwritten { font-family: 'Patrick Hand', cursive; }
       .topic-card { transition: transform 0.12s ease, border-color 0.15s ease; }
       .topic-card:active { transform: scale(0.98); }
+
+      @media (max-width: 480px) {
+        .home-shell {
+          padding: 24px 14px 18px !important;
+        }
+
+        .home-title {
+          font-size: 32px !important;
+        }
+
+        .home-subtitle {
+          font-size: 14px !important;
+        }
+
+        .home-blurb {
+          font-size: 12px !important;
+          margin-bottom: 22px !important;
+          max-width: 100% !important;
+        }
+
+        .topic-card-row {
+          gap: 12px !important;
+          padding: 12px 14px !important;
+        }
+
+        .practice-shell {
+          padding: 12px 14px 6px !important;
+        }
+
+        .practice-header {
+          margin-bottom: 8px !important;
+        }
+
+        .practice-title {
+          font-size: 20px !important;
+        }
+
+        .tier-label {
+          font-size: 15px !important;
+        }
+
+        .question-card,
+        .fact-card {
+          max-width: none !important;
+        }
+
+        .question-card {
+          padding: 18px 14px 16px !important;
+        }
+
+        .question-prompt {
+          font-size: 19px !important;
+          margin-bottom: 16px !important;
+          min-height: 0 !important;
+        }
+
+        .answer-btn {
+          font-size: 15px !important;
+          padding: 11px 12px !important;
+        }
+
+        .footer-nav {
+          padding: 10px 12px calc(18px + env(safe-area-inset-bottom)) !important;
+          gap: 10px !important;
+        }
+
+        .footer-nav button {
+          width: 46px !important;
+          height: 46px !important;
+        }
+
+        .steps-panel {
+          min-width: 0;
+        }
+
+        .steps-count {
+          font-size: 18px !important;
+        }
+      }
     `}</style>
   );
 
@@ -1655,14 +1735,14 @@ export default function MathOnTheMove() {
     return (
       <div style={sharedStyle}>
         {globalStyles}
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", padding: "40px 20px", maxWidth: 480, marginInline: "auto", width: "100%" }}>
-          <div className="handwritten" style={{ fontSize: 42, color: "#F2C744", textAlign: "center", lineHeight: 1.1 }}>
+        <div className="home-shell" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", padding: "40px 20px", maxWidth: 480, marginInline: "auto", width: "100%" }}>
+          <div className="handwritten home-title" style={{ fontSize: 42, color: "#F2C744", textAlign: "center", lineHeight: 1.1 }}>
             Math on the Move
           </div>
-          <div style={{ color: "rgba(245,241,230,0.6)", fontSize: 15, marginTop: 6, marginBottom: 4, textAlign: "center", fontStyle: "italic" }}>
+          <div className="home-subtitle" style={{ color: "rgba(245,241,230,0.6)", fontSize: 15, marginTop: 6, marginBottom: 4, textAlign: "center", fontStyle: "italic" }}>
             One step at a time.
           </div>
-          <div style={{ color: "rgba(245,241,230,0.4)", fontSize: 12.5, marginBottom: 30, textAlign: "center", maxWidth: 280 }}>
+          <div className="home-blurb" style={{ color: "rgba(245,241,230,0.4)", fontSize: 12.5, marginBottom: 30, textAlign: "center", maxWidth: 280 }}>
             👟 Each correct answer is one step forward earned. Play anywhere — traffic, flights, waiting rooms.
           </div>
 
@@ -1674,7 +1754,7 @@ export default function MathOnTheMove() {
               return (
                 <button
                   key={cat.key}
-                  className="chalk-card topic-card"
+                  className="chalk-card topic-card topic-card-row"
                   onClick={() => setSelectedTopic(cat.key)}
                   style={{
                     display: "flex",
@@ -1736,8 +1816,8 @@ export default function MathOnTheMove() {
     <div style={sharedStyle}>
       {globalStyles}
 
-      <div style={{ padding: "16px 18px 8px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+      <div className="practice-shell" style={{ padding: "16px 18px 8px" }}>
+      <div className="practice-header" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
           <button
             onClick={goHome}
             style={{
@@ -1756,7 +1836,7 @@ export default function MathOnTheMove() {
             <ArrowLeft size={14} /> Topics
           </button>
           <span
-            className="handwritten"
+            className="handwritten tier-label"
             style={{
               fontSize: 16,
               color: topicMeta.color,
@@ -1789,11 +1869,11 @@ export default function MathOnTheMove() {
 
         <div style={{ textAlign: "center" }}>
           {item.type === "question" ? (
-            <div className="handwritten" style={{ fontSize: 24, lineHeight: 1, color: "#F2C744" }}>
+            <div className="handwritten practice-title" style={{ fontSize: 24, lineHeight: 1, color: "#F2C744" }}>
               Question {item.qNumber} <span style={{ color: "rgba(245,241,230,0.55)" }}>of {PER_TOPIC}</span>
             </div>
           ) : (
-            <div className="handwritten" style={{ fontSize: 24, lineHeight: 1, color: "#F2C744" }}>
+            <div className="handwritten practice-title" style={{ fontSize: 24, lineHeight: 1, color: "#F2C744" }}>
               ✨ Cool Fact <span style={{ color: "rgba(245,241,230,0.55)" }}>· {item.afterQuestionNumber} of {PER_TOPIC} done</span>
             </div>
           )}
@@ -1805,7 +1885,7 @@ export default function MathOnTheMove() {
 
       <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "10px 16px" }}>
         {item.type === "fact" ? (
-          <div key={`fact-${localIndex}`} className="chalk-card bump" style={{ width: "100%", maxWidth: 420, borderRadius: 16, padding: "26px 22px" }}>
+          <div key={`fact-${localIndex}`} className="chalk-card fact-card bump" style={{ width: "100%", maxWidth: 420, borderRadius: 16, padding: "26px 22px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, justifyContent: "center" }}>
               <span style={{ fontSize: 28 }}>💡</span>
               <span className="handwritten" style={{ fontSize: 26, color: "#F2C744" }}>Cool Fact!</span>
@@ -1818,7 +1898,7 @@ export default function MathOnTheMove() {
             </div>
           </div>
         ) : (
-          <div key={q.id} className={`chalk-card ${bump ? "bump" : ""}`} style={{ width: "100%", maxWidth: 420, borderRadius: 16, padding: "20px 18px 18px" }}>
+          <div key={q.id} className={`chalk-card question-card ${bump ? "bump" : ""}`} style={{ width: "100%", maxWidth: 420, borderRadius: 16, padding: "20px 18px 18px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
             <span
               style={{
@@ -1842,7 +1922,7 @@ export default function MathOnTheMove() {
             </span>
           </div>
 
-          <div style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.35, whiteSpace: "pre-line", marginBottom: 20, minHeight: 56 }}>
+          <div className="question-prompt" style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.35, whiteSpace: "pre-line", marginBottom: 20, minHeight: 56 }}>
             {q.prompt}
           </div>
 
@@ -1871,7 +1951,7 @@ export default function MathOnTheMove() {
               return (
                 <button
                   key={i}
-                  className={`opt-btn ${isWrongFlash && !hasAnswered ? "shake" : ""}`}
+                  className={`opt-btn answer-btn ${isWrongFlash && !hasAnswered ? "shake" : ""}`}
                   onClick={() => selectOption(i)}
                   disabled={hasAnswered}
                   style={{
@@ -1922,7 +2002,7 @@ export default function MathOnTheMove() {
         )}
       </div>
 
-      <div style={{ padding: "10px 18px 26px", display: "flex", alignItems: "center", justifyContent: "space-between", maxWidth: 460, marginInline: "auto", width: "100%" }}>
+      <div className="footer-nav" style={{ padding: "10px 18px 26px", display: "flex", alignItems: "center", justifyContent: "space-between", maxWidth: 460, marginInline: "auto", width: "100%" }}>
         <button
           className="nav-circle"
           onClick={goPrev}
@@ -1937,8 +2017,8 @@ export default function MathOnTheMove() {
           <ChevronLeft size={26} />
         </button>
 
-        <div style={{ textAlign: "center" }}>
-          <div className="handwritten" style={{ fontSize: 20, color: "#F2C744" }}>
+        <div className="steps-panel" style={{ textAlign: "center" }}>
+          <div className="handwritten steps-count" style={{ fontSize: 20, color: "#F2C744" }}>
             👟 {points} <span style={{ color: "rgba(245,241,230,0.5)", fontSize: 14 }}>steps</span>
           </div>
           {!confirmReset ? (
